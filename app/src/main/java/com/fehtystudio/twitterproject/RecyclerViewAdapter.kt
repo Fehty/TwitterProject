@@ -11,7 +11,7 @@ import io.realm.Realm
 
 class RecyclerViewAdapter(private val context: Context? = null,
                           private val listFragment: ListFragment? = null,
-                          private val list: MutableList<ListData> = mutableListOf())
+                          private val list: List<ApiListResultData> = mutableListOf())
     : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -34,24 +34,24 @@ class RecyclerViewAdapter(private val context: Context? = null,
         private val itemText = view.findViewById<TextView>(R.id.itemText)
         private val realm = Realm.getDefaultInstance()
 
-        fun bind(data: ListData) {
-            itemText.text = data.itemText
+        fun bind(data: ApiListResultData) {
+            itemText.text = data.name
 
-            delete.setOnClickListener {
-                realm.executeTransaction {
-                    realm.where(MessagesRealmModel::class.java).equalTo("id", data.id).findFirst()!!.deleteFromRealm()
-                    removeItem(adapterPosition)
-                }
-            }
-
-            edit.setOnClickListener {
-                listFragment!!.invokeAlertDialogFragmentMethodToSetValuesToEditText(data.id)
-            }
+//            delete.setOnClickListener {
+//                realm.executeTransaction {
+//                    realm.where(MessagesRealmModel::class.java).equalTo("id", data.id).findFirst()!!.deleteFromRealm()
+//                    removeItem(adapterPosition)
+//                }
+//            }
+//
+//            edit.setOnClickListener {
+//                listFragment!!.invokeAlertDialogFragmentMethodToSetValuesToEditText(data.id)
+//            }
         }
 
-        private fun removeItem(position: Int) {
-            list.removeAt(position)
-            notifyItemRemoved(position)
-        }
+       // private fun removeItem(position: Int) {
+       //     list.removeAt(position)
+       //     notifyItemRemoved(position)
+       // }
     }
 }
