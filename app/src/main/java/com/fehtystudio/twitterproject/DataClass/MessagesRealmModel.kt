@@ -1,4 +1,4 @@
-package com.fehtystudio.twitterproject
+package com.fehtystudio.twitterproject.DataClass
 
 import io.realm.RealmObject
 

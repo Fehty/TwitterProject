@@ -1,4 +1,4 @@
-package com.fehtystudio.twitterproject
+package com.fehtystudio.twitterproject.Activity
 
 import android.app.Application
 import io.realm.Realm

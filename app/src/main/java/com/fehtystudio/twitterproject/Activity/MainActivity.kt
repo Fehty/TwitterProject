@@ -1,7 +1,9 @@
-package com.fehtystudio.twitterproject
+package com.fehtystudio.twitterproject.Activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.fehtystudio.twitterproject.Fragments.AlertDialogFragment
+import com.fehtystudio.twitterproject.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -15,5 +17,6 @@ class MainActivity : AppCompatActivity() {
         floatingActionButton.setOnClickListener {
             alertDialogActivity.show(supportFragmentManager, "alertDialogFragment")
         }
+
     }
 }
