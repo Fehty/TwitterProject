@@ -32,13 +32,14 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        progressBar.visibility = View.GONE
         getDataFromFireBase()
     }
 
-    fun initList() {
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
+    fun initList(initDecor: Boolean = true) {
+        if (initDecor) {
+            recyclerView.layoutManager = LinearLayoutManager(activity)
+            recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
+        }
         realm.executeTransaction {
             val realmLoop = realm.where(MessagesRealmModel::class.java).sort("id").findAll()
             realmLoop.forEach {
@@ -74,6 +75,7 @@ class ListFragment : Fragment() {
                         }
                         initList()
                     }
+
                     override fun onCancelled(databaseError: DatabaseError) = Unit
                 })
     }
@@ -88,8 +90,6 @@ class ListFragment : Fragment() {
         alertDialogFragment.show(activity.supportFragmentManager, "fragmentAlert")
     }
 }
-
-
 
 
 //        var childEventListener = (object : ChildEventListener {

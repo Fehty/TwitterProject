@@ -31,6 +31,7 @@ class AlertDialogFragment(private val setValues: Boolean = false,
         super.onViewCreated(view, savedInstanceState)
 
         val realmResult = realm.where(MessagesRealmModel::class.java).equalTo("id", enteredId).findFirst()
+        val fireBaseDataBase = FirebaseDatabase.getInstance().reference
         if (setValues) alertDialogEditTextFirst.setText(realmResult!!.text)
 
         alertDialogPositiveButton.setOnClickListener {
@@ -43,7 +44,8 @@ class AlertDialogFragment(private val setValues: Boolean = false,
                     }
                     val listFragment = fragmentManager!!.findFragmentById(R.id.container) as ListFragment
                     listFragment.list.clear()
-                    listFragment.initList()
+                    listFragment.initList(false)
+                    fireBaseDataBase.child("Messages").child(enteredId.toString()).setValue(alertDialogEditTextFirst.text.toString())
                 }
 
                 else -> {
@@ -59,7 +61,6 @@ class AlertDialogFragment(private val setValues: Boolean = false,
                         messagesRealmModel.text = alertDialogEditTextFirstText
                         realm.insertOrUpdate(messagesRealmModel)
 
-                        val fireBaseDataBase = FirebaseDatabase.getInstance().reference
                         fireBaseDataBase.child("Messages").child(itemId.toString()).setValue(alertDialogEditTextFirst.text.toString())
                     }
                     listFragment.addItem(alertDialogEditTextFirstText, itemId)
