@@ -3,6 +3,7 @@ package com.fehtystudio.twitterproject.Fragments
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,9 @@ import io.realm.Realm
 import kotlinx.android.synthetic.main.fragment_alert_dialog.*
 
 @SuppressLint("ValidFragment")
-class AlertDialogFragment(private var setValues: Boolean = false, private val enteredId: Int = 0) : DialogFragment() {
+class AlertDialogFragment(private val setValues: Boolean = false,
+                          private val enteredId: Int? = null)
+    : DialogFragment() {
 
     private val realm = Realm.getDefaultInstance()
     private val messagesRealmModel = MessagesRealmModel()
@@ -45,7 +48,7 @@ class AlertDialogFragment(private var setValues: Boolean = false, private val en
 
                 else -> {
                     val alertDialogEditTextFirstText = alertDialogEditTextFirst.text.toString()
-//                    val listFragment = fragmentManager!!.findFragmentById(R.id.container) as ListFragment
+                    val listFragment = fragmentManager!!.findFragmentById(R.id.container) as ListFragment
                     realm.executeTransaction {
                         val result = realm.where(MessagesRealmModel::class.java).max("id")
                         when (result) {
@@ -56,27 +59,24 @@ class AlertDialogFragment(private var setValues: Boolean = false, private val en
                         messagesRealmModel.text = alertDialogEditTextFirstText
                         realm.insertOrUpdate(messagesRealmModel)
 
-                        val database = FirebaseDatabase.getInstance().reference
-                        database.child(itemId.toString()).setValue(alertDialogEditTextFirst.text.toString())
+                        val fireBaseDataBase = FirebaseDatabase.getInstance().reference
+                        fireBaseDataBase.child("Messages").child(itemId.toString()).setValue(alertDialogEditTextFirst.text.toString())
                     }
-//                    listFragment.addItem(alertDialogEditTextFirstText, itemId)
+                    listFragment.addItem(alertDialogEditTextFirstText, itemId)
                 }
+
             }
-
-            //  if (alertDialogEditTextFirst.text.toString().isNotEmpty()) {
-            //      val database = FirebaseDatabase.getInstance().reference
-            //      Toast.makeText(activity, "$itemId", Toast.LENGTH_SHORT).show()
-            //      database.child(itemId.toString()).setValue(alertDialogEditTextFirst.text.toString())
-            //  } else {
-            //      Toast.makeText(activity, "Invalidate", Toast.LENGTH_SHORT).show()
-            //  }
-
             this@AlertDialogFragment.dismiss()
         }
 
-
         alertDialogNegativeButton.setOnClickListener {
             this.dismiss()
+            realm.executeTransaction {
+                val realmLoop = realm.where(MessagesRealmModel::class.java).sort("id").findAll()
+                realmLoop.forEach {
+                    Log.e("*#*#*#*#*#**#", "ItemText = ${it.text}      ID = ${it.id}")
+                }
+            }
         }
 
     }

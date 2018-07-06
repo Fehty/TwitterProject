@@ -17,6 +17,5 @@ class MainActivity : AppCompatActivity() {
         floatingActionButton.setOnClickListener {
             alertDialogActivity.show(supportFragmentManager, "alertDialogFragment")
         }
-
     }
 }

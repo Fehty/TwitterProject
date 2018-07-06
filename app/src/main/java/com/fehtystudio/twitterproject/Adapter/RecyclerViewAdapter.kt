@@ -13,7 +13,7 @@ import com.google.firebase.database.FirebaseDatabase
 import io.realm.Realm
 
 class RecyclerViewAdapter(private val listFragment: ListFragment? = null,
-                          private val list: MutableList<ListData> = mutableListOf())
+                          private val list: MutableList<ListData>? = null)
     : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -22,11 +22,11 @@ class RecyclerViewAdapter(private val listFragment: ListFragment? = null,
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(list[position])
+        holder.bind(list!![position])
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        return list!!.size
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -37,7 +37,7 @@ class RecyclerViewAdapter(private val listFragment: ListFragment? = null,
         private val realm = Realm.getDefaultInstance()
 
         fun bind(data: ListData) {
-            itemText.text = data.itemText
+            itemText.text = data.itemTextRealmIo
 
             delete.setOnClickListener {
                 realm.executeTransaction {
@@ -45,18 +45,18 @@ class RecyclerViewAdapter(private val listFragment: ListFragment? = null,
                 }
 
                 val database = FirebaseDatabase.getInstance().reference
-                database.child(data.id.toString()).removeValue()
+                database.child("Messages").child(data.id.toString()).removeValue()
 
                 removeItem(adapterPosition)
             }
 
             edit.setOnClickListener {
-                listFragment!!.invokeAlertDialogFragmentMethodToSetValuesToEditText(data.id)
+                listFragment!!.invokeAlertDialogFragmentMethodToSetValuesToEditText(data.id!!)
             }
         }
 
         private fun removeItem(position: Int) {
-            list.removeAt(position)
+            list!!.removeAt(position)
             notifyItemRemoved(position)
         }
 

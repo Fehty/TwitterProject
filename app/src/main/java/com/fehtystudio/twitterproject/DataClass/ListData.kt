@@ -1,3 +1,7 @@
 package com.fehtystudio.twitterproject.DataClass
 
-data class ListData(var itemText: String = "", var id: Int = 0)
+data class ListData(
+        var itemTextRealmIo: String? = null,
+        var id: Int? = null,
+        var itemTextFireBaseDatabase: String? = null
+)
