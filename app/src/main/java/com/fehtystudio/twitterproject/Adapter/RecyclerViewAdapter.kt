@@ -31,8 +31,8 @@ class RecyclerViewAdapter(private val listFragment: ListFragment? = null,
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        private val delete = view.findViewById<TextView>(R.id.delete)
-        private val edit = view.findViewById<TextView>(R.id.edit)
+        private val delete = view.findViewById<TextView>(R.id.swipeMenuDelete)
+        private val edit = view.findViewById<TextView>(R.id.swipeMenuEdit)
         private val itemText = view.findViewById<TextView>(R.id.itemText)
         private val realm = Realm.getDefaultInstance()
 
@@ -40,13 +40,12 @@ class RecyclerViewAdapter(private val listFragment: ListFragment? = null,
             itemText.text = data.itemTextRealmIo
 
             delete.setOnClickListener {
+
                 realm.executeTransaction {
                     realm.where(MessagesRealmModel::class.java).equalTo("id", data.id).findFirst()!!.deleteFromRealm()
                 }
-
                 val database = FirebaseDatabase.getInstance().reference
-                database.child("Messages").child(data.id.toString()).removeValue()
-
+                database.child("User1").child("Messages").child("${data.id}").removeValue()
                 removeItem(adapterPosition)
             }
 
@@ -59,39 +58,8 @@ class RecyclerViewAdapter(private val listFragment: ListFragment? = null,
             list!!.removeAt(position)
             notifyItemRemoved(position)
         }
-
     }
 }
-
-
-//        private fun initFireBaseData() {
-//
-//            val database = FirebaseDatabase.getInstance().reference
-//
-//            database.addChildEventListener(object : ChildEventListener {
-//                override fun onCancelled(p0: DatabaseError) {}
-//                override fun onChildMoved(p0: DataSnapshot, p1: String?) {}
-//                override fun onChildChanged(p0: DataSnapshot, p1: String?) {}
-//                override fun onChildRemoved(dataSnapshot: DataSnapshot) {
-//                    val value = dataSnapshot.getValue(String::class.java)
-//                    //     list.remove(ListData(value!!))
-//                    removeItem(adapterPosition)
-//                    adapter = RecyclerViewAdapter(activity, this@ListFragment, list)
-//                    recyclerView.adapter = adapter
-//                }
-//
-//                override fun onChildAdded(dataSnapshot: DataSnapshot, string: String?) {
-//                    val value = dataSnapshot.getValue(String::class.java)
-//                    list.add(ListData(value!!))
-//                    adapter = RecyclerViewAdapter(activity, this@ListFragment, list)
-//                    progressBar.visibility = View.GONE
-//                    recyclerView.adapter = adapter
-//                }
-//            })
-//        }
-
-
-
 
 
 

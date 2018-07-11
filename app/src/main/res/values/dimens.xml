@@ -2,4 +2,12 @@
 <resources>
     <dimen name="item_template_for_list_swipe_menu_layout_width">240dp</dimen>
     <dimen name="item_template_for_list_item_title_text_size">25sp</dimen>
+    <dimen name="activity_main_floating_button_margin">8dp</dimen>
+    <dimen name="fragment_alert_dialog_main_layout_padding">8dp</dimen>
+    <dimen name="fragment_alert_dialog_alert_dialog_title_text_size">20sp</dimen>
+    <dimen name="fragment_alert_dialog_alert_dialog_edit_text_min_width">240dp</dimen>
+    <dimen name="item_template_item_text_text_size">20sp</dimen>
+    <dimen name="item_template_item_text_margin">8dp</dimen>
+    <dimen name="activity_main_tool_bar_text_view_text_size">20sp</dimen>
+    <dimen name="activity_main_toolbar_profile_image_button_margin_end">12dp</dimen>
 </resources>

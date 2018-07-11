@@ -45,7 +45,7 @@ class AlertDialogFragment(private val setValues: Boolean = false,
                     val listFragment = fragmentManager!!.findFragmentById(R.id.container) as ListFragment
                     listFragment.list.clear()
                     listFragment.initList(false)
-                    fireBaseDataBase.child("Messages").child(enteredId.toString()).setValue(alertDialogEditTextFirst.text.toString())
+                    fireBaseDataBase.child("User1").child("Messages").child("$enteredId").setValue(alertDialogEditTextFirst.text.toString())
                 }
 
                 else -> {
@@ -61,7 +61,7 @@ class AlertDialogFragment(private val setValues: Boolean = false,
                         messagesRealmModel.text = alertDialogEditTextFirstText
                         realm.insertOrUpdate(messagesRealmModel)
 
-                        fireBaseDataBase.child("Messages").child(itemId.toString()).setValue(alertDialogEditTextFirst.text.toString())
+                        fireBaseDataBase.child("User1").child("Messages").child("$itemId").setValue(alertDialogEditTextFirst.text.toString())
                     }
                     listFragment.addItem(alertDialogEditTextFirstText, itemId)
                 }
@@ -79,7 +79,6 @@ class AlertDialogFragment(private val setValues: Boolean = false,
                 }
             }
         }
-
     }
 
     override fun onPause() {

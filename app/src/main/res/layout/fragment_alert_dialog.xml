@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="@dimen/fragment_alert_dialog_main_layout_padding">
 
     <TextView
         android:id="@+id/alertDialogTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Message"
+        android:text="@string/fragment_alert_dialog_alert_dialog_title_text"
         android:textColor="@color/colorPrimary"
-        android:textSize="20sp"
+        android:textSize="@dimen/fragment_alert_dialog_alert_dialog_title_text_size"
         android:textStyle="bold" />
 
     <EditText
@@ -22,9 +23,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:minWidth="240dp"
+        android:minWidth="@dimen/fragment_alert_dialog_alert_dialog_edit_text_min_width"
         android:textColor="@color/colorPrimary"
-        android:textColorHint="@color/colorPrimary" />
+        android:textColorHint="@color/colorPrimary"
+        android:inputType="text"
+        tools:ignore="LabelFor" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -37,19 +40,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorPrimary"
-            android:text="Yes"
+            android:text="@string/fragment_alert_dialog_alert_dialog_positive_button_text"
             android:textAllCaps="false"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/alertDialogNegativeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorPrimary"
-            android:text="No"
+            android:text="@string/fragment_alert_dialog_alert_dialog_negative_button_text"
             android:textAllCaps="false"
-            android:textColor="@android:color/white" />
-
+            android:textColor="@android:color/white"
+            tools:ignore="ButtonStyle" />
     </LinearLayout>
 
 </LinearLayout>

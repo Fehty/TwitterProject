@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">TwitterProject</string>
+    <string name="fragment_alert_dialog_alert_dialog_positive_button_text">Yes</string>
+    <string name="fragment_alert_dialog_alert_dialog_negative_button_text">No</string>
+    <string name="fragment_alert_dialog_alert_dialog_title_text">Message</string>
+    <string name="item_template_swipe_menu_edit">Edit</string>
+    <string name="item_template_swipe_menu_delete">Delete</string>
+    <string name="activity_main_toolbar_profile_image_button">ProfileImage</string>
 </resources>
