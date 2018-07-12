@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.fehtystudio.twitterproject.R
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_registration_profile.*
 
 class RegistrationProfileFragment : Fragment() {
@@ -21,37 +22,42 @@ class RegistrationProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        activity!!.floatingActionButton.hide()
         backButton.setOnClickListener {
-            fragmentManager
-                    ?.beginTransaction()
-                    ?.addToBackStack(null)
-                    ?.replace(R.id.container, SignInProfileFragment())
-                    ?.commit()
+            changeThisFragmentTo(SignInProfileFragment())
         }
 
         registrationButton.setOnClickListener {
             when {
 
-                login.text.toString().isNotEmpty() and password.text.toString().isNotEmpty() -> {
-                    auth.createUserWithEmailAndPassword(login.text.toString(), password.text.toString())
+                email.text.toString().isNotEmpty() and password.text.toString().isNotEmpty() -> {
+                    auth.createUserWithEmailAndPassword(email.text.toString(), password.text.toString())
                             .addOnCompleteListener { task ->
                                 when {
                                     task.isSuccessful -> {
                                         Toast.makeText(activity, "Registration completed", Toast.LENGTH_SHORT).show()
-                                        fragmentManager
-                                                ?.beginTransaction()
-                                                ?.addToBackStack(null)
-                                                ?.replace(R.id.container, ListFragment())
-                                                ?.commit()
+                                        changeThisFragmentTo(ListFragment())
                                     }
                                     else -> Toast.makeText(activity, "Registration failed", Toast.LENGTH_SHORT).show()
                                 }
                             }
                 }
-
                 else -> Toast.makeText(activity, "Field is Empty", Toast.LENGTH_SHORT).show()
-
             }
         }
+    }
+
+    private fun changeThisFragmentTo(fragment: Fragment) {
+        fragmentManager
+                ?.beginTransaction()
+                ?.addToBackStack(null)
+                ?.replace(R.id.container, fragment)
+                ?.commit()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        email.text.clear()
+        password.text.clear()
     }
 }

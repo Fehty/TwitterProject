@@ -9,6 +9,7 @@ import com.fehtystudio.twitterproject.DataClass.ListData
 import com.fehtystudio.twitterproject.DataClass.MessagesRealmModel
 import com.fehtystudio.twitterproject.Fragments.ListFragment
 import com.fehtystudio.twitterproject.R
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import io.realm.Realm
 
@@ -44,8 +45,9 @@ class RecyclerViewAdapter(private val listFragment: ListFragment? = null,
                 realm.executeTransaction {
                     realm.where(MessagesRealmModel::class.java).equalTo("id", data.id).findFirst()!!.deleteFromRealm()
                 }
+                val user = FirebaseAuth.getInstance()
                 val database = FirebaseDatabase.getInstance().reference
-                database.child("User1").child("Messages").child("${data.id}").removeValue()
+                database.child(user.uid!!).child("Messages").child("${data.id}").removeValue()
                 removeItem(adapterPosition)
             }
 

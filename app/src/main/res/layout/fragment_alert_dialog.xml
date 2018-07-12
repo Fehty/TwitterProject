@@ -23,10 +23,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
+        android:inputType="text"
         android:minWidth="@dimen/fragment_alert_dialog_alert_dialog_edit_text_min_width"
         android:textColor="@color/colorPrimary"
         android:textColorHint="@color/colorPrimary"
-        android:inputType="text"
         tools:ignore="LabelFor" />
 
     <LinearLayout
@@ -36,21 +36,21 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/alertDialogPositiveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/fragment_alert_dialog_alert_dialog_positive_button_text"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            tools:ignore="ButtonStyle" />
-
-        <Button
             android:id="@+id/alertDialogNegativeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorPrimary"
             android:text="@string/fragment_alert_dialog_alert_dialog_negative_button_text"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            tools:ignore="ButtonStyle" />
+
+        <Button
+            android:id="@+id/alertDialogPositiveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/fragment_alert_dialog_alert_dialog_positive_button_text"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             tools:ignore="ButtonStyle" />

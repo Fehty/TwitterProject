@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.fehtystudio.twitterproject.R
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_success_registration_profile.*
 
 class SuccessRegistrationProfileFragment : Fragment() {
@@ -20,6 +21,8 @@ class SuccessRegistrationProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        activity!!.floatingActionButton.hide()
 
         userEmail.text = user.currentUser!!.email
 

@@ -26,13 +26,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         profileImage.setOnClickListener {
-            when {
-                !signInProfileFragment.isAdded -> {
-                    setFragmentTo(signInProfileFragment)
-                    floatingActionButton.hide()
-                }
-//                signInProfileFragment.isAdded -> Log.e("*#*#*#*#*#**#", "SignInProfileFragment")
-            }
+            if(!signInProfileFragment.isAdded) setFragmentTo(signInProfileFragment)
         }
     }
 

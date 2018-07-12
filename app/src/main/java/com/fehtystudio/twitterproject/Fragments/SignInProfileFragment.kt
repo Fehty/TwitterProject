@@ -2,13 +2,13 @@ package com.fehtystudio.twitterproject.Fragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.fehtystudio.twitterproject.R
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_sign_in_profile.*
 
 class SignInProfileFragment : Fragment() {
@@ -21,34 +21,22 @@ class SignInProfileFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            fragmentManager
-                    ?.beginTransaction()
-                    ?.addToBackStack(null)
-                    ?.replace(R.id.container, SuccessRegistrationProfileFragment())
-                    ?.commit()
-        }
+        if (auth.currentUser != null) changeThisFragmentTo(SuccessRegistrationProfileFragment())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        activity!!.floatingActionButton.hide()
+
         signInButton.setOnClickListener {
             when {
 
-                login.text.toString().isNotEmpty() and password!!.text.toString().isNotEmpty() -> {
-                    auth.signInWithEmailAndPassword(login.text.toString(), password!!.text.toString())
+                email.text.toString().isNotEmpty() and password!!.text.toString().isNotEmpty() -> {
+                    auth.signInWithEmailAndPassword(email.text.toString(), password!!.text.toString())
                             .addOnCompleteListener { task ->
                                 when {
-                                    task.isSuccessful -> {
-                                        Log.e("*#*#*#*##*", "SignInSuccessfully")
-                                        fragmentManager
-                                                ?.beginTransaction()
-                                                ?.addToBackStack(null)
-                                                ?.replace(R.id.container, ListFragment())
-                                                ?.commit()
-                                    }
+                                    task.isSuccessful -> changeThisFragmentTo(ListFragment())
                                     else -> Toast.makeText(activity, "Sign In Failed", Toast.LENGTH_SHORT).show()
                                 }
                             }
@@ -59,11 +47,25 @@ class SignInProfileFragment : Fragment() {
         }
 
         registrationButton.setOnClickListener {
-            fragmentManager
-                    ?.beginTransaction()
-                    ?.addToBackStack(null)
-                    ?.replace(R.id.container, RegistrationProfileFragment())
-                    ?.commit()
+            changeThisFragmentTo(RegistrationProfileFragment())
         }
+
+        backButton.setOnClickListener {
+            changeThisFragmentTo(ListFragment())
+        }
+    }
+
+    private fun changeThisFragmentTo(fragment: Fragment) {
+        fragmentManager
+                ?.beginTransaction()
+                ?.addToBackStack(null)
+                ?.replace(R.id.container, fragment)
+                ?.commit()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        email.text.clear()
+        password.text.clear()
     }
 }

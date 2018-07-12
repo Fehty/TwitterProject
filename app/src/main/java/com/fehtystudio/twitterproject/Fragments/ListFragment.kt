@@ -11,15 +11,17 @@ import android.view.View
 import android.view.ViewGroup
 import com.fehtystudio.twitterproject.Activity.MyApplication
 import com.fehtystudio.twitterproject.Adapter.RecyclerViewAdapter
-import com.fehtystudio.twitterproject.DataClass.FirebaseDatabaseData
+import com.fehtystudio.twitterproject.DataClass.FireBaseDatabaseData
 import com.fehtystudio.twitterproject.DataClass.ListData
 import com.fehtystudio.twitterproject.DataClass.MessagesRealmModel
 import com.fehtystudio.twitterproject.R
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import io.realm.Realm
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_recycler_view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,6 +32,8 @@ class ListFragment : Fragment() {
     internal val list = mutableListOf<ListData>()
     private val realm = Realm.getDefaultInstance()
     private var adapter = RecyclerViewAdapter()
+    private val user = FirebaseAuth.getInstance().currentUser
+    private val myApplication = MyApplication()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_recycler_view, container, false)
@@ -37,14 +41,21 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getDataFromFireBase()
+        if (user != null) {
+            userStatus.visibility = View.GONE
+            myApplication.changeRealmIo()
+            getDataFromFireBase()
+            activity!!.floatingActionButton.show()
+        } else {
+            progressBar.visibility = View.GONE
+            activity!!.floatingActionButton.hide()
+        }
     }
 
     private val messagesRealmModel = MessagesRealmModel()
-    private val reference = FirebaseDatabase.getInstance().reference.child("User1").child("Messages")
-    private val myApplication = MyApplication()
 
     private fun getDataFromFireBase() {
+        val reference = FirebaseDatabase.getInstance().reference.child(user!!.uid).child("Messages")
         reference.addListenerForSingleValueEvent(
                 object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -52,12 +63,11 @@ class ListFragment : Fragment() {
                             val value = it.getValue(String::class.java)
                             val valueId = it.key
 
-                          realm.executeTransaction {
-                              messagesRealmModel.id = valueId!!.toInt()
-                              messagesRealmModel.text = value
-                              realm.insertOrUpdate(messagesRealmModel)
-                          }
-                             // Log.e("*#*#*#*#*#**#", "$valueId")
+                            realm.executeTransaction {
+                                messagesRealmModel.id = valueId!!.toInt()
+                                messagesRealmModel.text = value
+                                realm.insertOrUpdate(messagesRealmModel)
+                            }
                         }
                         initList()
                     }
@@ -68,8 +78,12 @@ class ListFragment : Fragment() {
 
     fun initList(initDecor: Boolean = true) {
         if (initDecor) {
-            recyclerView.layoutManager = LinearLayoutManager(activity)
-            recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
+            try {
+                recyclerView.layoutManager = LinearLayoutManager(activity)
+                recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
+            } catch (ex: IllegalStateException) {
+                initList()
+            }
         }
         realm.executeTransaction {
             val realmLoop = realm.where(MessagesRealmModel::class.java).sort("id").findAll()
@@ -94,8 +108,8 @@ class ListFragment : Fragment() {
     }
 
     private fun getRestApi() {
-        myApplication.retrofit.getDataFromFireBaseDataBase().enqueue(object : Callback<FirebaseDatabaseData> {
-            override fun onResponse(call: Call<FirebaseDatabaseData>?, response: Response<FirebaseDatabaseData>?) {
+        myApplication.retrofit.getDataFromFireBaseDataBase().enqueue(object : Callback<FireBaseDatabaseData> {
+            override fun onResponse(call: Call<FireBaseDatabaseData>?, response: Response<FireBaseDatabaseData>?) {
                 val value = response!!.body()!!.messages
                 realm.executeTransaction {
                     for (i in 1..value.size) {
@@ -107,7 +121,7 @@ class ListFragment : Fragment() {
                 initList()
             }
 
-            override fun onFailure(call: Call<FirebaseDatabaseData>?, t: Throwable?) {
+            override fun onFailure(call: Call<FireBaseDatabaseData>?, t: Throwable?) {
                 Log.e("**#*#*#*#*#**", "onFailure", t)
             }
         })

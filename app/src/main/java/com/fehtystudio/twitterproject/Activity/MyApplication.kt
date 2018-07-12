@@ -12,15 +12,6 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         Realm.init(this)
-
-        val realm = Realm.getDefaultInstance()
-
-        realm.executeTransaction {
-            realm
-                    .where(MessagesRealmModel::class.java)
-                    .findAll()
-                    .deleteAllFromRealm()
-        }
     }
 
     val retrofit = Retrofit
@@ -29,4 +20,14 @@ class MyApplication : Application() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiInterface::class.java)!!
+
+    fun changeRealmIo() {
+        val realm = Realm.getDefaultInstance()
+        realm.executeTransaction {
+            realm
+                    .where(MessagesRealmModel::class.java)
+                    .findAll()
+                    .deleteAllFromRealm()
+        }
+    }
 }

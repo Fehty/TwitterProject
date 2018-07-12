@@ -2,5 +2,5 @@ package com.fehtystudio.twitterproject.DataClass
 
 import com.google.gson.annotations.SerializedName
 
-data class FirebaseDatabaseData(@SerializedName("Messages")
+data class FireBaseDatabaseData(@SerializedName("Messages")
                                 var messages : HashMap<Any, Any>)
