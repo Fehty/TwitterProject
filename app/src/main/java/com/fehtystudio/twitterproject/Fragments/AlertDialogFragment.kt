@@ -24,25 +24,22 @@ class AlertDialogFragment(private val setValues: Boolean = false,
         return inflater.inflate(R.layout.fragment_alert_dialog, container, false)
     }
 
-    private val realm = Realm.getDefaultInstance()
-    private val messagesRealmModel = MessagesRealmModel()
-    private val realmResult = realm.where(MessagesRealmModel::class.java).equalTo("id", enteredId).findFirst()
-    private val fireBaseDataBase = FirebaseDatabase.getInstance().reference
-    private val user = FirebaseAuth.getInstance().currentUser
-    private val result = realm.where(MessagesRealmModel::class.java).max("id")
-    private var itemId = 0
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val listFragment = fragmentManager!!.findFragmentById(R.id.container) as ListFragment
-
+        val realm = Realm.getDefaultInstance()
+        val realmResult = realm.where(MessagesRealmModel::class.java).equalTo("id", enteredId).findFirst()
         if (setValues) alertDialogEditTextFirst.setText(realmResult!!.text)
         alertDialogEditTextFirst.setSelection(alertDialogEditTextFirst.text.length)
 
         alertDialogPositiveButton.setOnClickListener {
 
             val alertDialogEditTextFirstText = alertDialogEditTextFirst.text.toString()
+            val user = FirebaseAuth.getInstance().currentUser
+            val messagesRealmModel = MessagesRealmModel()
+            val fireBaseDataBase = FirebaseDatabase.getInstance().reference
+            var itemId = 0
 
             when {
 
@@ -55,7 +52,8 @@ class AlertDialogFragment(private val setValues: Boolean = false,
                     fireBaseDataBase.child(user!!.uid).child("Messages").child("$enteredId").setValue(alertDialogEditTextFirst.text.toString())
                 }
 
-                user != null && alertDialogEditTextFirst.text.isNotEmpty() -> {
+                alertDialogEditTextFirst.text.isNotEmpty() -> {
+                    val result = realm.where(MessagesRealmModel::class.java).max("id")
                     realm.executeTransaction {
                         when (result) {
                             null -> itemId = 1
@@ -64,10 +62,9 @@ class AlertDialogFragment(private val setValues: Boolean = false,
                         messagesRealmModel.id = itemId
                         messagesRealmModel.text = alertDialogEditTextFirstText
                         realm.insertOrUpdate(messagesRealmModel)
-
                     }
                     fireBaseDataBase
-                            .child(user.uid)
+                            .child(user!!.uid)
                             .child("Messages")
                             .child("$itemId")
                             .setValue(alertDialogEditTextFirst.text.toString())
@@ -76,7 +73,7 @@ class AlertDialogFragment(private val setValues: Boolean = false,
                 }
 
                 alertDialogEditTextFirst.text.isEmpty() -> Toast.makeText(activity, "Field is Empty", Toast.LENGTH_SHORT).show()
-                else -> Toast.makeText(activity, "Log in", Toast.LENGTH_SHORT).show()
+            //    else -> Toast.makeText(activity, "Log in", Toast.LENGTH_SHORT).show()
             }
             this@AlertDialogFragment.dismiss()
         }
