@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="@dimen/fragment_alert_dialog_main_layout_margin"
     android:gravity="center"
-    android:orientation="vertical"
-    android:padding="@dimen/fragment_alert_dialog_main_layout_padding">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/alertDialogTitle"
@@ -15,7 +16,13 @@
         android:text="@string/fragment_alert_dialog_alert_dialog_title_text"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/fragment_alert_dialog_alert_dialog_title_text_size"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/alertDialogEditTextFirst"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <EditText
         android:id="@+id/alertDialogEditTextFirst"
@@ -27,33 +34,52 @@
         android:minWidth="@dimen/fragment_alert_dialog_alert_dialog_edit_text_min_width"
         android:textColor="@color/colorPrimary"
         android:textColorHint="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/alertDialogNegativeButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alertDialogTitle"
         tools:ignore="LabelFor" />
 
-    <LinearLayout
+    <Button
+        android:id="@+id/alertDialogNegativeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal">
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/fragment_alert_dialog_alert_dialog_negative_button_text"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/alertDialogPositiveButton"
+        app:layout_constraintTop_toBottomOf="@+id/alertDialogEditTextFirst"
+        tools:ignore="ButtonStyle" />
 
-        <Button
-            android:id="@+id/alertDialogNegativeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/fragment_alert_dialog_alert_dialog_negative_button_text"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            tools:ignore="ButtonStyle" />
+    <Button
+        android:id="@+id/alertDialogPositiveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/fragment_alert_dialog_alert_dialog_positive_button_text"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/alertDialogNegativeButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alertDialogEditTextFirst"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="ButtonStyle" />
 
-        <Button
-            android:id="@+id/alertDialogPositiveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/fragment_alert_dialog_alert_dialog_positive_button_text"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            tools:ignore="ButtonStyle" />
-    </LinearLayout>
+    <android.support.constraint.Group
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

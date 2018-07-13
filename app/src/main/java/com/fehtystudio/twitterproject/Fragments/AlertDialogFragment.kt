@@ -19,26 +19,30 @@ class AlertDialogFragment(private val setValues: Boolean = false,
                           private val enteredId: Int? = null)
     : DialogFragment() {
 
-    private val realm = Realm.getDefaultInstance()
-    private val messagesRealmModel = MessagesRealmModel()
-    private var itemId = 0
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_alert_dialog, container, false)
     }
 
+    private val realm = Realm.getDefaultInstance()
+    private val messagesRealmModel = MessagesRealmModel()
+    private val realmResult = realm.where(MessagesRealmModel::class.java).equalTo("id", enteredId).findFirst()
+    private val fireBaseDataBase = FirebaseDatabase.getInstance().reference
+    private val user = FirebaseAuth.getInstance().currentUser
+    private val result = realm.where(MessagesRealmModel::class.java).max("id")
+    private var itemId = 0
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val realmResult = realm.where(MessagesRealmModel::class.java).equalTo("id", enteredId).findFirst()
-        val fireBaseDataBase = FirebaseDatabase.getInstance().reference
-        val user = FirebaseAuth.getInstance().currentUser
+        val listFragment = fragmentManager!!.findFragmentById(R.id.container) as ListFragment
 
         if (setValues) alertDialogEditTextFirst.setText(realmResult!!.text)
         alertDialogEditTextFirst.setSelection(alertDialogEditTextFirst.text.length)
 
         alertDialogPositiveButton.setOnClickListener {
+
+            val alertDialogEditTextFirstText = alertDialogEditTextFirst.text.toString()
 
             when {
 
@@ -46,17 +50,13 @@ class AlertDialogFragment(private val setValues: Boolean = false,
                     realm.executeTransaction {
                         realmResult!!.text = alertDialogEditTextFirst.text.toString()
                     }
-                    val listFragment = fragmentManager!!.findFragmentById(R.id.container) as ListFragment
                     listFragment.list.clear()
                     listFragment.initList(false)
                     fireBaseDataBase.child(user!!.uid).child("Messages").child("$enteredId").setValue(alertDialogEditTextFirst.text.toString())
                 }
 
                 user != null && alertDialogEditTextFirst.text.isNotEmpty() -> {
-                    val alertDialogEditTextFirstText = alertDialogEditTextFirst.text.toString()
-                    val listFragment = fragmentManager!!.findFragmentById(R.id.container) as ListFragment
                     realm.executeTransaction {
-                        val result = realm.where(MessagesRealmModel::class.java).max("id")
                         when (result) {
                             null -> itemId = 1
                             else -> itemId = result.toInt() + 1

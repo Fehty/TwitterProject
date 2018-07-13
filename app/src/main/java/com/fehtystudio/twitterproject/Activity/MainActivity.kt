@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         profileImage.setOnClickListener {
-            if(!signInProfileFragment.isAdded) setFragmentTo(signInProfileFragment)
+            if (!signInProfileFragment.isAdded) setFragmentTo(signInProfileFragment)
         }
     }
 

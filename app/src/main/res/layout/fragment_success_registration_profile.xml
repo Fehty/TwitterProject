@@ -1,37 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
+    <EditText
         android:id="@+id/userEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="40dp"
+        android:hint="@string/fragment_success_registration_profile_user_email_text_hint"
+        android:inputType="textEmailAddress"
+        android:maxLength="35"
+        android:minWidth="@dimen/fragment_success_registration_profile_user_email_min_width"
+        android:textAlignment="center"
         android:textColor="@color/colorPrimary"
-        android:textSize="20sp"
-        tools:text="alioleg8@gmail.com" />
+        android:textSize="@dimen/fragment_success_registration_profile_user_email_text_size"
+        app:layout_constraintBottom_toTopOf="@+id/userPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="@string/fragment_success_registration_profile_user_email_tools_text" />
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/userPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:autoSizeMaxTextSize="@dimen/fragment_success_registration_profile_user_password_auto_size_max_text_size"
+        android:autoSizeMinTextSize="@dimen/fragment_success_registration_profile_user_password_auto_size_min_text_size"
+        android:autoSizeTextType="uniform"
+        android:hint="@string/fragment_success_registration_profile_user_password_text_hint"
+        android:inputType="text"
+        android:maxLength="35"
+        android:minWidth="@dimen/fragment_success_registration_profile_user_password_min_width"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userEmail"
+        tools:ignore="TextFields"
+        tools:targetApi="o"
+        tools:text="Password" />
 
-        <Button
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:text="Back" />
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fragment_success_registration_profile_back_button_text"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/saveUserData"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userPassword"
+        app:layout_constraintVertical_bias="0.149"
+        tools:ignore="ButtonStyle" />
 
-        <Button
-            android:id="@+id/signOutButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SignOut" />
-    </LinearLayout>
-</LinearLayout>
+    <Button
+        android:id="@+id/saveUserData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fragment_success_registration_profile_save_user_data"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/signOutButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
+        app:layout_constraintTop_toBottomOf="@+id/userPassword"
+        app:layout_constraintVertical_bias="0.149"
+        tools:ignore="ButtonStyle" />
+
+    <Button
+        android:id="@+id/signOutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fragment_success_registration_profile_sign_out_button_text"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/saveUserData"
+        app:layout_constraintTop_toBottomOf="@+id/userPassword"
+        app:layout_constraintVertical_bias="0.149"
+        tools:ignore="ButtonStyle" />
+
+</android.support.constraint.ConstraintLayout>

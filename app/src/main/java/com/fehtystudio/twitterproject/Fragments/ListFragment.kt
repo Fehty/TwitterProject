@@ -32,8 +32,8 @@ class ListFragment : Fragment() {
     internal val list = mutableListOf<ListData>()
     private val realm = Realm.getDefaultInstance()
     private var adapter = RecyclerViewAdapter()
-    private val user = FirebaseAuth.getInstance().currentUser
     private val myApplication = MyApplication()
+    private val user = FirebaseAuth.getInstance().currentUser
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_recycler_view, container, false)
@@ -43,9 +43,10 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if (user != null) {
             userStatus.visibility = View.GONE
+            activity!!.profileImage.visibility = View.GONE
+            activity!!.floatingActionButton.visibility = View.GONE
             myApplication.changeRealmIo()
             getDataFromFireBase()
-            activity!!.floatingActionButton.show()
         } else {
             progressBar.visibility = View.GONE
             activity!!.floatingActionButton.hide()
@@ -62,7 +63,6 @@ class ListFragment : Fragment() {
                         dataSnapshot.children.forEach {
                             val value = it.getValue(String::class.java)
                             val valueId = it.key
-
                             realm.executeTransaction {
                                 messagesRealmModel.id = valueId!!.toInt()
                                 messagesRealmModel.text = value
@@ -78,12 +78,8 @@ class ListFragment : Fragment() {
 
     fun initList(initDecor: Boolean = true) {
         if (initDecor) {
-            try {
-                recyclerView.layoutManager = LinearLayoutManager(activity)
-                recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
-            } catch (ex: IllegalStateException) {
-                initList()
-            }
+            recyclerView.layoutManager = LinearLayoutManager(activity)
+            recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
         }
         realm.executeTransaction {
             val realmLoop = realm.where(MessagesRealmModel::class.java).sort("id").findAll()
@@ -94,6 +90,8 @@ class ListFragment : Fragment() {
         }
         adapter = RecyclerViewAdapter(this@ListFragment, list)
         recyclerView.adapter = adapter
+        activity!!.floatingActionButton.show()
+        activity!!.profileImage.visibility = View.VISIBLE
         progressBar.visibility = View.GONE
     }
 
@@ -108,7 +106,7 @@ class ListFragment : Fragment() {
     }
 
     private fun getRestApi() {
-        myApplication.retrofit.getDataFromFireBaseDataBase().enqueue(object : Callback<FireBaseDatabaseData> {
+        myApplication.retrofit.getDataFromFireBaseDataBase(user!!.uid).enqueue(object : Callback<FireBaseDatabaseData> {
             override fun onResponse(call: Call<FireBaseDatabaseData>?, response: Response<FireBaseDatabaseData>?) {
                 val value = response!!.body()!!.messages
                 realm.executeTransaction {

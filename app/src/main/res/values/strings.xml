@@ -1,9 +1,27 @@
 <resources>
     <string name="app_name">TwitterProject</string>
+    <string name="activity_main_toolbar_profile_image_button">ProfileImage</string>
     <string name="fragment_alert_dialog_alert_dialog_positive_button_text">Yes</string>
     <string name="fragment_alert_dialog_alert_dialog_negative_button_text">No</string>
     <string name="fragment_alert_dialog_alert_dialog_title_text">Message</string>
     <string name="item_template_swipe_menu_edit">Edit</string>
     <string name="item_template_swipe_menu_delete">Delete</string>
-    <string name="activity_main_toolbar_profile_image_button">ProfileImage</string>
+    <string name="fragment_recycler_view_user_status_text">No User</string>
+    <string name="fragment_registration_profile_email_text_hint">E-mail</string>
+    <string name="fragment_registration_profile_password_text_hint">Password</string>
+    <string name="fragment_registration_profile_registration_text_view_text">Регистрация</string>
+    <string name="fragment_registration_profile_back_button_text">Назад</string>
+    <string name="fragment_registration_profile_registration_button_text">Регистрация</string>
+    <string name="fragment_sign_in_profile_enter_text_view_text">Войти</string>
+    <string name="fragment_sign_in_profile_email_text_hint">E-mail</string>
+    <string name="fragment_sign_in_profile_password_text_hint">Password</string>
+    <string name="fragment_sign_in_profile_back_button_text">Назад</string>
+    <string name="fragment_sign_in_profile_sign_in_button_text">Войти</string>
+    <string name="fragment_sign_in_profile_registration_button_text">Регистрация</string>
+    <string name="fragment_success_registration_profile_back_button_text">Back</string>
+    <string name="fragment_success_registration_profile_sign_out_button_text">SignOut</string>
+    <string name="fragment_success_registration_profile_user_email_tools_text">alioleg8@gmail.com</string>
+    <string name="fragment_success_registration_profile_save_user_data">Save</string>
+    <string name="fragment_success_registration_profile_user_email_text_hint">Email</string>
+    <string name="fragment_success_registration_profile_user_password_text_hint">Password</string>
 </resources>

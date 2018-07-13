@@ -10,4 +10,20 @@
     <dimen name="item_template_item_text_margin">8dp</dimen>
     <dimen name="activity_main_tool_bar_text_view_text_size">20sp</dimen>
     <dimen name="activity_main_toolbar_profile_image_button_margin_end">12dp</dimen>
+    <dimen name="fragment_registration_profile_second_linear_layout_margin_top">30dp</dimen>
+    <dimen name="fragment_registration_profile_registration_text_view_text_size">25sp</dimen>
+    <dimen name="fragment_registration_profile_email_min_width">160dp</dimen>
+    <dimen name="fragment_registration_profile_password_min_width">160dp</dimen>
+    <dimen name="fragment_sign_in_profile_enter_text_view_text_size">25sp</dimen>
+    <dimen name="fragment_sign_in_profile_email_min_width">160dp</dimen>
+    <dimen name="fragment_sign_in_profile_password_min_width">160dp</dimen>
+    <dimen name="fragment_sign_in_profile_second_linear_layout_margin_top">30dp</dimen>
+    <dimen name="fragment_success_registration_profile_user_email_margin_bottom">5dp</dimen>
+    <dimen name="fragment_success_registration_profile_user_email_text_size">20sp</dimen>
+    <dimen name="fragment_success_registration_profile_user_email_min_width">250dp</dimen>
+    <dimen name="fragment_success_registration_profile_user_password_margin_bottom">15dp</dimen>
+    <dimen name="fragment_success_registration_profile_user_password_auto_size_max_text_size">20sp</dimen>
+    <dimen name="fragment_success_registration_profile_user_password_auto_size_min_text_size">1sp</dimen>
+    <dimen name="fragment_success_registration_profile_user_password_min_width">250dp</dimen>
+    <dimen name="fragment_alert_dialog_main_layout_margin">8dp</dimen>
 </resources>

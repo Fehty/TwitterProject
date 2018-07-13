@@ -36,6 +36,8 @@ class RecyclerViewAdapter(private val listFragment: ListFragment? = null,
         private val edit = view.findViewById<TextView>(R.id.swipeMenuEdit)
         private val itemText = view.findViewById<TextView>(R.id.itemText)
         private val realm = Realm.getDefaultInstance()
+        private val user = FirebaseAuth.getInstance()
+        private val database = FirebaseDatabase.getInstance().reference
 
         fun bind(data: ListData) {
             itemText.text = data.itemTextRealmIo
@@ -45,8 +47,6 @@ class RecyclerViewAdapter(private val listFragment: ListFragment? = null,
                 realm.executeTransaction {
                     realm.where(MessagesRealmModel::class.java).equalTo("id", data.id).findFirst()!!.deleteFromRealm()
                 }
-                val user = FirebaseAuth.getInstance()
-                val database = FirebaseDatabase.getInstance().reference
                 database.child(user.uid!!).child("Messages").child("${data.id}").removeValue()
                 removeItem(adapterPosition)
             }
