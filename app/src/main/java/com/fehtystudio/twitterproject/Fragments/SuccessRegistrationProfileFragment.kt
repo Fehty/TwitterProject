@@ -21,13 +21,14 @@ class SuccessRegistrationProfileFragment : Fragment() {
 
     private val user = FirebaseAuth.getInstance()
     private val realm = Realm.getDefaultInstance()
+    private val mainUserEmail = user.currentUser!!.email
     private val mainUserPassword = realm.where(AuthRealmModel::class.java).findFirst()!!.userPassword
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         activity!!.floatingActionButton.hide()
-        userEmail.setText(user.currentUser!!.email)
+        userEmail.setText(mainUserEmail)
         userPassword.setText(mainUserPassword)
 
         saveUserData.setOnClickListener {

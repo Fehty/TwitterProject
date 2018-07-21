@@ -1,6 +1,7 @@
 package com.fehtystudio.twitterproject.Activity
 
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.fehtystudio.twitterproject.Fragments.AlertDialogFragment
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         floatingActionButton.setOnClickListener {
             alertDialogActivity.show(supportFragmentManager, "alertDialogFragment")
+            Snackbar.make(it, "SnackBar", Snackbar.LENGTH_LONG).show()
         }
 
         profileImage.setOnClickListener {

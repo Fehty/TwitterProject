@@ -73,7 +73,6 @@ class AlertDialogFragment(private val setValues: Boolean = false,
                 }
 
                 alertDialogEditTextFirst.text.isEmpty() -> Toast.makeText(activity, "Field is Empty", Toast.LENGTH_SHORT).show()
-            //    else -> Toast.makeText(activity, "Log in", Toast.LENGTH_SHORT).show()
             }
             this@AlertDialogFragment.dismiss()
         }

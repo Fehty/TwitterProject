@@ -1,5 +1,7 @@
 package com.fehtystudio.twitterproject.Fragments
 
+import android.annotation.SuppressLint
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -35,22 +37,11 @@ class SignInProfileFragment : Fragment() {
         activity!!.floatingActionButton.hide()
 
         signInButton.setOnClickListener {
+
             when {
 
                 email.text.toString().isNotEmpty() and password!!.text.toString().isNotEmpty() -> {
-                    auth.signInWithEmailAndPassword(email.text.toString(), password!!.text.toString())
-                            .addOnCompleteListener { task ->
-                                when {
-                                    task.isSuccessful -> {
-                                        realm.executeTransaction {
-                                            authRealmModel.userPassword = password.text.toString()
-                                            realm.insertOrUpdate(authRealmModel)
-                                        }
-                                        changeThisFragmentTo(ListFragment())
-                                    }
-                                    else -> Toast.makeText(activity, "Sign In Failed", Toast.LENGTH_SHORT).show()
-                                }
-                            }
+                    asyncTask.execute()
                 }
 
                 else -> Toast.makeText(activity, "Field is Empty", Toast.LENGTH_SHORT).show()
@@ -64,6 +55,30 @@ class SignInProfileFragment : Fragment() {
         backButton.setOnClickListener {
             changeThisFragmentTo(ListFragment())
         }
+    }
+
+    var asyncTask = @SuppressLint("StaticFieldLeak")
+    object : AsyncTask<Any, Any, Any>() {
+        override fun doInBackground(vararg params: Any?): Any? {
+            userSignIn()
+            return null
+        }
+    }
+
+    fun userSignIn() {
+        auth.signInWithEmailAndPassword(email.text.toString(), password!!.text.toString())
+                .addOnCompleteListener { task ->
+                    when {
+                        task.isSuccessful -> {
+                            realm.executeTransaction {
+                                authRealmModel.userPassword = password.text.toString()
+                                realm.insertOrUpdate(authRealmModel)
+                            }
+                            changeThisFragmentTo(ListFragment())
+                        }
+                        else -> Toast.makeText(activity, "Sign In Failed", Toast.LENGTH_SHORT).show()
+                    }
+                }
     }
 
     private fun changeThisFragmentTo(fragment: Fragment) {
