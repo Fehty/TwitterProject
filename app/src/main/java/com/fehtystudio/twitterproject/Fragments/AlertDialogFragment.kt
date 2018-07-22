@@ -3,6 +3,7 @@ package com.fehtystudio.twitterproject.Fragments
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,9 @@ import com.fehtystudio.twitterproject.DataClass.MessagesRealmModel
 import com.fehtystudio.twitterproject.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import kotlinx.android.synthetic.main.fragment_alert_dialog.*
 
@@ -53,23 +57,29 @@ class AlertDialogFragment(private val setValues: Boolean = false,
                 }
 
                 alertDialogEditTextFirst.text.isNotEmpty() -> {
-                    val result = realm.where(MessagesRealmModel::class.java).max("id")
-                    realm.executeTransaction {
-                        when (result) {
-                            null -> itemId = 1
-                            else -> itemId = result.toInt() + 1
+                    Observable.create<Any> {
+                        val realmObj = Realm.getDefaultInstance()
+                        val result = realmObj.where(MessagesRealmModel::class.java).max("id")
+                        realmObj.executeTransaction {
+                            when (result) {
+                                null -> itemId = 1
+                                else -> itemId = result.toInt() + 1
+                            }
+                            messagesRealmModel.id = itemId
+                            messagesRealmModel.text = alertDialogEditTextFirstText
+                            realmObj.insertOrUpdate(messagesRealmModel)
                         }
-                        messagesRealmModel.id = itemId
-                        messagesRealmModel.text = alertDialogEditTextFirstText
-                        realm.insertOrUpdate(messagesRealmModel)
-                    }
-                    fireBaseDataBase
-                            .child(user!!.uid)
-                            .child("Messages")
-                            .child("$itemId")
-                            .setValue(alertDialogEditTextFirst.text.toString())
+                        fireBaseDataBase
+                                .child(user!!.uid)
+                                .child("Messages")
+                                .child("$itemId")
+                                .setValue(alertDialogEditTextFirst.text.toString())
 
-                    listFragment.addItem(alertDialogEditTextFirstText, itemId)
+                        listFragment.addItem(alertDialogEditTextFirstText, itemId)
+                    }.subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .doOnError { Log.e("#*#*#*#**", it.toString()) }
+                            .subscribe()
                 }
 
                 alertDialogEditTextFirst.text.isEmpty() -> Toast.makeText(activity, "Field is Empty", Toast.LENGTH_SHORT).show()

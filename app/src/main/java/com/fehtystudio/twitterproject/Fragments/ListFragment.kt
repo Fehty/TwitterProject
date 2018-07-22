@@ -20,6 +20,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_recycler_view.*
@@ -81,13 +84,22 @@ class ListFragment : Fragment() {
             recyclerView.layoutManager = LinearLayoutManager(activity)
             recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
         }
-        realm.executeTransaction {
-            val realmLoop = realm.where(MessagesRealmModel::class.java).sort("id").findAll()
-            realmLoop.forEach {
-                list.add(ListData(it.text.toString(), it.id!!.toInt()))
-                //  Log.e("*#*#*#*#*#**#", "Id = ${it.id} Text = ${it.text}")
+
+        Observable.create<Any> { emitter ->
+            val realm = Realm.getDefaultInstance()
+            realm.executeTransaction {
+                val realmLoop = realm.where(MessagesRealmModel::class.java).sort("id").findAll()
+                realmLoop.forEach {
+                    list.add(ListData(it.text.toString(), it.id!!.toInt()))
+                    //  Log.e("*#*#*#*#*#**#", "Id = ${it.id} Text = ${it.text}")
+                }
             }
+            emitter.onComplete()
         }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+
         adapter = RecyclerViewAdapter(this@ListFragment, list)
         recyclerView.adapter = adapter
         activity!!.floatingActionButton.show()

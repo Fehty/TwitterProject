@@ -73,7 +73,7 @@ class RegistrationProfileFragment : Fragment() {
                 .addOnCompleteListener { task ->
                     when {
                         task.isSuccessful -> {
-                            //   Toast.makeText(activity, "Registration completed", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(activity, "Registration completed", Toast.LENGTH_SHORT).show()
                             realm.executeTransaction {
                                 authRealmModel.userPassword = password.text.toString()
                                 realm.insertOrUpdate(authRealmModel)
