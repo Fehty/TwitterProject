@@ -95,8 +95,7 @@ class ListFragment : Fragment() {
                 }
             }
             emitter.onComplete()
-        }
-                .subscribeOn(Schedulers.io())
+        }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe()
 
